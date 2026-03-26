@@ -100,6 +100,8 @@ b.  You have the following code chunk, but look carefully, it's not exactly the 
 
     Add `error` as a code chunk option and set it to `false` and then set it to `true`. After each value, render your document and observe its effect. Ultimately, choose the value that allows you to render your document without altering the code. Based on the behavior you observe, describe what this code chunk option does.
 
+    When true, the 'error' code chunk renders any error associated with the chunk when set to 'true'.
+
 ::: callout-tip
 Reading [the documentation](https://quarto.org/docs/reference/formats/pdf.html#execution) might also be hepful.
 :::
@@ -170,6 +172,21 @@ datasaurus_dozen
 
 In a single pipeline, calculate the mean of `x`, mean of `y`, standard deviation of `x`, standard deviation of `y`, and the correlation between `x` and `y` for each level of the `dataset` variable. Then, in 1-2 sentences, comment on how these summary statistics compare across groups (datasets).
 
+```{r}
+
+datasaurus_dozen |>
+  group_by(dataset) |>
+  summarize(mean_x = mean(x),
+            mean_y = mean(y),
+            stdev_x = sd(x),
+            stdev_y = sd(y),
+            corl_xy = cor(x,y)
+            )
+
+```
+
+All summary statistics appear similar and with little variance.
+
 ::: callout-tip
 There are 13 groups but `tibble`s only print out 10 rows by default. Add `print(n = 13)` as the last step of your pipeline to display all rows.
 :::
@@ -177,6 +194,16 @@ There are 13 groups but `tibble`s only print out 10 rows by default. Add `print(
 ## Question 7
 
 Create a scatterplot of `y` versus `x` and color and facet it by `dataset`. Then, in 1-2 sentences, how these plots compare across groups (datasets). How does your response in this question compare to your response to the previous question and what does this say about using visualizations and summary statistics when getting to know a dataset?
+
+```{r}
+
+datasaurus_dozen |>
+  ggplot(aes(x = x, y = y, color = dataset)) +
+    geom_point(show.legend = FALSE) + facet_wrap(~dataset)
+
+```
+
+Visualizing a dataset can provide more information on trends and clustering not apparent when using summary statistics.
 
 ::: callout-tip
 When you both color and facet by the same variable, you'll end up with a redundant legend. Turn off the legend by adding `show.legend = FALSE` to the geom creating the legend.

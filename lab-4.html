@@ -188,7 +188,8 @@ Tip
 ! could not find function "gplot"</code></pre>
 </div>
 </div>
-<p>Add <code>error</code> as a code chunk option and set it to <code>false</code> and then set it to <code>true</code>. After each value, render your document and observe its effect. Ultimately, choose the value that allows you to render your document without altering the code. Based on the behavior you observe, describe what this code chunk option does.</p></li>
+<p>Add <code>error</code> as a code chunk option and set it to <code>false</code> and then set it to <code>true</code>. After each value, render your document and observe its effect. Ultimately, choose the value that allows you to render your document without altering the code. Based on the behavior you observe, describe what this code chunk option does.</p>
+<p>When true, the ‘error’ code chunk renders any error associated with the chunk when set to ‘true’.</p></li>
 </ol>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -304,6 +305,35 @@ Note
 <section id="question-6" class="level2">
 <h2 class="anchored" data-anchor-id="question-6">Question 6</h2>
 <p>In a single pipeline, calculate the mean of <code>x</code>, mean of <code>y</code>, standard deviation of <code>x</code>, standard deviation of <code>y</code>, and the correlation between <code>x</code> and <code>y</code> for each level of the <code>dataset</code> variable. Then, in 1-2 sentences, comment on how these summary statistics compare across groups (datasets).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>datasaurus_dozen <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(dataset) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_x =</span> <span class="fu">mean</span>(x),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_y =</span> <span class="fu">mean</span>(y),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">stdev_x =</span> <span class="fu">sd</span>(x),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">stdev_y =</span> <span class="fu">sd</span>(y),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">corl_xy =</span> <span class="fu">cor</span>(x,y)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>            )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 13 × 6
+   dataset    mean_x mean_y stdev_x stdev_y corl_xy
+   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+ 1 away         54.3   47.8    16.8    26.9 -0.0641
+ 2 bullseye     54.3   47.8    16.8    26.9 -0.0686
+ 3 circle       54.3   47.8    16.8    26.9 -0.0683
+ 4 dino         54.3   47.8    16.8    26.9 -0.0645
+ 5 dots         54.3   47.8    16.8    26.9 -0.0603
+ 6 h_lines      54.3   47.8    16.8    26.9 -0.0617
+ 7 high_lines   54.3   47.8    16.8    26.9 -0.0685
+ 8 slant_down   54.3   47.8    16.8    26.9 -0.0690
+ 9 slant_up     54.3   47.8    16.8    26.9 -0.0686
+10 star         54.3   47.8    16.8    26.9 -0.0630
+11 v_lines      54.3   47.8    16.8    26.9 -0.0694
+12 wide_lines   54.3   47.8    16.8    26.9 -0.0666
+13 x_shape      54.3   47.8    16.8    26.9 -0.0656</code></pre>
+</div>
+</div>
+<p>All summary statistics appear similar and with little variance.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -321,6 +351,19 @@ Tip
 <section id="question-7" class="level2">
 <h2 class="anchored" data-anchor-id="question-7">Question 7</h2>
 <p>Create a scatterplot of <code>y</code> versus <code>x</code> and color and facet it by <code>dataset</code>. Then, in 1-2 sentences, how these plots compare across groups (datasets). How does your response in this question compare to your response to the previous question and what does this say about using visualizations and summary statistics when getting to know a dataset?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>datasaurus_dozen <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> dataset)) <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>dataset)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-4_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Visualizing a dataset can provide more information on trends and clustering not apparent when using summary statistics.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
