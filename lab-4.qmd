@@ -9,6 +9,9 @@ categories: "Lab"
 
 library(datasauRus)
 library(tidyverse)
+library(palmerpenguins)
+
+
 ```
 
 # Introduction
@@ -57,7 +60,8 @@ b.  Which of the chunk label options above is the best option? Explain your reas
 You have the following code chunk:
 
 ```{r}
-#| eval: false
+#| eval: true
+#| warning: true
     
 ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm)) + 
   geom_point()
@@ -65,9 +69,9 @@ ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
 
 Add the following code chunk options, one at a time, and set each to `false` and then to `true`. After each value, render your document and observe its effect. Ultimately, choose the values that are the most appropriate for this code chunk. Based on the behaviors you observe, describe what each code chunk option does.
 
--   `echo`
--   `warning`
--   `eval`
+-   `echo` Shows unexecuted code chunk in render if true. When false, it is not rendered.
+-   `warning` If code chunk cannot be executed, error message is allowed to be rendered.
+-   `eval` Code chunk is executed when rendering if set to 'true'.
 
 ## Question 3
 
@@ -75,9 +79,11 @@ a.  You have the following code chunk again.
 
     ```{r}
     #| eval: false
+    #| fig-width: 2
+    #| fig-asp: 0.5
 
     ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm)) + 
-      geom_point()
+      geom_point() 
     ```
 
     Add `fig-width` and `fig-asp` as code chunk options. Try setting `fig-width` to values between 1 and 10. Try setting `fig-asp` to values between 0.1 and 1. Re-render the document after each value and observe its effect. Ultimately, choose values that make the plot look visually pleasing in the rendered document. Based on the behavior you observe, describe what each chunk option does.
@@ -85,13 +91,16 @@ a.  You have the following code chunk again.
 b.  You have the following code chunk, but look carefully, it's not exactly the same!
 
     ```{r}
-    #| eval: false
+    #| eval: true
+    #| error: true
 
     gplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm)) + 
       geom_point()
     ```
 
     Add `error` as a code chunk option and set it to `false` and then set it to `true`. After each value, render your document and observe its effect. Ultimately, choose the value that allows you to render your document without altering the code. Based on the behavior you observe, describe what this code chunk option does.
+
+    When true, the 'error' code chunk renders any error associated with the chunk when set to 'true'.
 
 ::: callout-tip
 Reading [the documentation](https://quarto.org/docs/reference/formats/pdf.html#execution) might also be hepful.
@@ -163,6 +172,21 @@ datasaurus_dozen
 
 In a single pipeline, calculate the mean of `x`, mean of `y`, standard deviation of `x`, standard deviation of `y`, and the correlation between `x` and `y` for each level of the `dataset` variable. Then, in 1-2 sentences, comment on how these summary statistics compare across groups (datasets).
 
+```{r}
+
+datasaurus_dozen |>
+  group_by(dataset) |>
+  summarize(mean_x = mean(x),
+            mean_y = mean(y),
+            stdev_x = sd(x),
+            stdev_y = sd(y),
+            corl_xy = cor(x,y)
+            )
+
+```
+
+All summary statistics appear similar and with little variance.
+
 ::: callout-tip
 There are 13 groups but `tibble`s only print out 10 rows by default. Add `print(n = 13)` as the last step of your pipeline to display all rows.
 :::
@@ -171,16 +195,23 @@ There are 13 groups but `tibble`s only print out 10 rows by default. Add `print(
 
 Create a scatterplot of `y` versus `x` and color and facet it by `dataset`. Then, in 1-2 sentences, how these plots compare across groups (datasets). How does your response in this question compare to your response to the previous question and what does this say about using visualizations and summary statistics when getting to know a dataset?
 
+```{r}
+
+datasaurus_dozen |>
+  ggplot(aes(x = x, y = y, color = dataset)) +
+    geom_point(show.legend = FALSE) + facet_wrap(~dataset)
+
+```
+
+Visualizing a dataset can provide more information on trends and clustering not apparent when using summary statistics.
+
 ::: callout-tip
 When you both color and facet by the same variable, you'll end up with a redundant legend. Turn off the legend by adding `show.legend = FALSE` to the geom creating the legend.
 :::
 
 ::: render-commit-push
 Render, commit, and push one last time. Make sure that you commit and push all changed documents and your Git pane is completely empty before proceeding.
-
-
 :::
-
 
 ## Grading
 
