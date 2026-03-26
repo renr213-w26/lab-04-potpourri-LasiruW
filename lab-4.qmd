@@ -9,6 +9,9 @@ categories: "Lab"
 
 library(datasauRus)
 library(tidyverse)
+library(palmerpenguins)
+
+
 ```
 
 # Introduction
@@ -57,7 +60,8 @@ b.  Which of the chunk label options above is the best option? Explain your reas
 You have the following code chunk:
 
 ```{r}
-#| eval: false
+#| eval: true
+#| warning: true
     
 ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm)) + 
   geom_point()
@@ -65,9 +69,9 @@ ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
 
 Add the following code chunk options, one at a time, and set each to `false` and then to `true`. After each value, render your document and observe its effect. Ultimately, choose the values that are the most appropriate for this code chunk. Based on the behaviors you observe, describe what each code chunk option does.
 
--   `echo`
--   `warning`
--   `eval`
+-   `echo` Shows unexecuted code chunk in render if true. When false, it is not rendered.
+-   `warning` If code chunk cannot be executed, error message is allowed to be rendered.
+-   `eval` Code chunk is executed when rendering if set to 'true'.
 
 ## Question 3
 
@@ -75,9 +79,11 @@ a.  You have the following code chunk again.
 
     ```{r}
     #| eval: false
+    #| fig-width: 2
+    #| fig-asp: 0.5
 
     ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm)) + 
-      geom_point()
+      geom_point() 
     ```
 
     Add `fig-width` and `fig-asp` as code chunk options. Try setting `fig-width` to values between 1 and 10. Try setting `fig-asp` to values between 0.1 and 1. Re-render the document after each value and observe its effect. Ultimately, choose values that make the plot look visually pleasing in the rendered document. Based on the behavior you observe, describe what each chunk option does.
@@ -85,7 +91,8 @@ a.  You have the following code chunk again.
 b.  You have the following code chunk, but look carefully, it's not exactly the same!
 
     ```{r}
-    #| eval: false
+    #| eval: true
+    #| error: true
 
     gplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm)) + 
       geom_point()
@@ -177,10 +184,7 @@ When you both color and facet by the same variable, you'll end up with a redunda
 
 ::: render-commit-push
 Render, commit, and push one last time. Make sure that you commit and push all changed documents and your Git pane is completely empty before proceeding.
-
-
 :::
-
 
 ## Grading
 
